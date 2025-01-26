@@ -32,18 +32,20 @@ try {
 
 }
 
-if (isset($_POST["submit"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Sign Up
 
         $user_email = $_POST["email"];
         $user_password = $_POST["password"];
 
-        $SignUpQuery = "INSERT INTO users (USER_Password, USER_Email) VALUES ('$user_password', '$user_email')";
-        $stmt = $connection->prepare($SignUpQuery);
-        $result = $stmt->execute();
+        $SignUpQuery = "INSERT INTO users (USER_Password, USER_Email) VALUES (:password, :email)";
 
-        if ($result) {
+        $stmt = $connection->prepare($SignUpQuery);
+        $stmt->bindParam(':password', $user_password);
+        $stmt->bindParam(':email', $user_email);
+
+        if ($stmt->execute()) {
             echo "Sign up successfully<br>";
         } else {
             echo "Sign up failed<br>";
@@ -60,7 +62,7 @@ if (isset($_POST["submit"])) {
     <title>Sign Up</title>
 </head>
 <body>
-<form method="POST" action="UserLogin.php">
+<form method="POST" action="">
     Email: <input type="email" name="email" required><br><br>
     Password: <input type="password" name="password" required><br><br>
     <input type="submit">
