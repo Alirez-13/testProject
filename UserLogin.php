@@ -1,5 +1,5 @@
 <?php
-$server = "localhost";
+$server = "127.0.0.1:3307";
 $username = "root";
 $password = "";
 $dsn = "mysql:host=$server;dbname=test";
@@ -16,22 +16,26 @@ try {
         $user_email = $_POST['email'];
         $user_password = $_POST['password'];
 
-        $userQuery = "SELECT * FROM users WHERE USER_Email = :email";
+        $userQuery = "SELECT * FROM users WHERE USER_Email = :email AND USER_Password = :password";
         $stmt = $connection->prepare($userQuery);
-        $stmt->bindParam(':email', $user_email);
+//        $stmt->bindParam(':email', $user_email);
 
-        $result = $stmt->execute();
-        $fetch = $stmt->fetch();
+        $result = $stmt->execute(
+            array(
+                ":email" => $user_email,
+                ":password" => $user_password
+            )
+        );
+        $row = $stmt->rowCount();
 
-        if ($fetch != NULL) {
-            echo $stmt->execute();
+        if ($row > 0) {
+            echo "Worked successfully <br>";
         }
-
 
         $passH = password_hash($user_password, PASSWORD_DEFAULT);
 
-        if ( password_verify($passH, $stmt['USER_Password'])) {
-            echo "Login successfully" . htmlspecialchars($stmt['USER_Email']);
+        if (password_verify($user_password, $passH, )) {
+            echo "Login successfully";
         } else {
             echo "Login failed ";
         }

@@ -1,13 +1,12 @@
 <?php
 
-$server = "localhost";
+$server = "127.0.0.1:3307";
 $username = "root";
 $password = "";
 $dsn = "mysql:host=$server;dbname=test";
 
 // Database using PDO
 $connection = new PDO($dsn, $username, $password);
-
 
 try {
 
@@ -29,7 +28,6 @@ try {
 
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
-
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
