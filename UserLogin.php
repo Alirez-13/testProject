@@ -11,25 +11,31 @@ try {
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     echo "Connected successfully <br>";
 
-    if (isset($_POST["login"])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $user_email = $_POST['email'];
-        $user_password = trim($_POST['password']);
+        $user_password = $_POST['password'];
 
-        $stmt = $connection->prepare("SELECT * FROM users WHERE USER_Email = :email AND USER_Password = :password");
+        $userQuery = "SELECT * FROM users WHERE USER_Email = :email";
+        $stmt = $connection->prepare($userQuery);
+        $stmt->bindParam(':email', $user_email);
 
-        $stmt->execute(array(":email" => $_POST['email'], ":password" => $_POST['password']));
+        $result = $stmt->execute();
+        $fetch = $stmt->fetch();
 
-        $user_stmt = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($fetch != NULL) {
+            echo $stmt->execute();
+        }
+
+
         $passH = password_hash($user_password, PASSWORD_DEFAULT);
 
-        if ($user_stmt && password_verify($passH, $user_stmt['USER_Password'])) {
-            echo "Login successfully";
+        if ( password_verify($passH, $stmt['USER_Password'])) {
+            echo "Login successfully" . htmlspecialchars($stmt['USER_Email']);
         } else {
-            echo "Login failed";
+            echo "Login failed ";
         }
     }
-
 
 } catch (PDOException $e) {
     echo $e->getMessage();
