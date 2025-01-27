@@ -1,6 +1,6 @@
 <?php
 
-$server = "127.0.0.1:3307";
+$server = "127.0.0.1:3306";
 $username = "root";
 $password = "";
 $dsn = "mysql:host=$server;dbname=test";
@@ -35,13 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Sign Up
 
         $user_email = $_POST["email"];
-        $user_password = $_POST["password"];
+        $user_password = trim($_POST["password"]);
 
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
         $SignUpQuery = "INSERT INTO users (USER_Password, USER_Email) VALUES (:password, :email)";
 
         $stmt = $connection->prepare($SignUpQuery);
-        $stmt->bindParam(':password', $hashed_password);
+        $stmt->bindParam(':password', $user_password);
         $stmt->bindParam(':email', $user_email);
 
         if ($stmt->execute()) {
