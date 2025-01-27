@@ -19,7 +19,7 @@ try {
 
     $createTable = "CREATE TABLE IF NOT EXISTS users (
         USER_ID INT AUTO_INCREMENT PRIMARY KEY,
-        USER_Password VARCHAR(30) NOT NULL,
+        USER_Password VARCHAR(255) NOT NULL,
         USER_Email VARCHAR(30) NOT NULL)";
 
     $connection->exec($createTable);
