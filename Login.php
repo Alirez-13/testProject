@@ -29,7 +29,7 @@ try {
         var_dump(password_verify($user_password, $hashed_password_db));
         var_dump($user_password);
 
-        if (password_verify($user_password, $hashed_password_db)) {
+        if ($result && password_verify($user_password, $hashed_password_db)) {
             echo "Login successfully";
         } else {
             echo "Login failed ";
