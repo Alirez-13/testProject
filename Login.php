@@ -13,7 +13,7 @@ try {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-
+        // Connect to DB
         $user_email = $_POST['email'];
         $user_password = trim($_POST['password']);
 
@@ -36,7 +36,6 @@ try {
         }
 
     }
-
 } catch (PDOException $e) {
     echo $e->getMessage();
 }

@@ -29,7 +29,6 @@ try {
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Sign Up
@@ -38,6 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_password = trim($_POST["password"]);
 
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+        // Check if password verify is working well
+        var_dump(password_verify($user_password, $hashed_password));
+
         $SignUpQuery = "INSERT INTO users (USER_Password, USER_Email) VALUES (:password, :email)";
 
         $stmt = $connection->prepare($SignUpQuery);
