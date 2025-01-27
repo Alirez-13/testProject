@@ -27,6 +27,7 @@ try {
         $hashed_password_db = $fetch['USER_Password'];
         var_dump($hashed_password_db);
         var_dump(password_verify($user_password, $hashed_password_db));
+        var_dump($user_password);
 
         if (password_verify($user_password, $hashed_password_db)) {
             echo "Login successfully";
